@@ -1,0 +1,12 @@
+[package]
+name = "botanical-latin"
+version = "0.0.6"
+edition = "2021"
+description = "Decliner / conjugator / inflector for classical / botanical Latin."
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/gold-silver-copper/botanical-latin"
+
+[dependencies]
+
+csv = "1.1"
+serde = { version = "1.0", features = ["derive"] }
