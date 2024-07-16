@@ -12,7 +12,7 @@ fn main() {
 
     let complexik = ComplexNoun {
         head_noun: "lorica".into(),
-        adjective: vec!["hamatus".into(),"segmentus".into()],
+        adjective: vec!["hamatus".into(), "segmentus".into()],
         adposition_noun: vec!["manica".into()],
     };
     let comp2 = conji.complex_noun(&complexik, &Case::Gen, &Number::Plural);
@@ -24,9 +24,6 @@ fn main() {
     let comp2 = Latin::guess_noun("trichoma", &Case::Gen, &Number::Plural);
     println!("{:#?}", comp2.0);
 
-
-
-
     let comp2 = Latin::guess_adjective("hirsutus", &Case::Gen, &Number::Plural, &Gender::Feminine);
     println!("{:#?}", comp2);
 
@@ -36,13 +33,11 @@ fn main() {
     let comp2 = Latin::guess_adjective("integer", &Case::Gen, &Number::Plural, &Gender::Feminine);
     println!("{:#?}", comp2);
 
-
     let comp2 = Latin::guess_adjective("laevis", &Case::Gen, &Number::Plural, &Gender::Feminine);
     println!("{:#?}", comp2);
 
     let comp2 = Latin::guess_adjective("acer", &Case::Gen, &Number::Plural, &Gender::Feminine);
     println!("{:#?}", comp2);
-
 
     let comp2 = Latin::guess_adjective("simplex", &Case::Gen, &Number::Plural, &Gender::Feminine);
     println!("{:#?}", comp2);
@@ -56,20 +51,29 @@ fn main() {
     let comp2 = Latin::guess_adjective("teres", &Case::Gen, &Number::Plural, &Gender::Feminine);
     println!("{:#?}", comp2);
 
-    let comp2 = Latin::guess_adjective("arachnoideus", &Case::Gen, &Number::Plural, &Gender::Feminine);
+    let comp2 = Latin::guess_adjective(
+        "arachnoideus",
+        &Case::Gen,
+        &Number::Plural,
+        &Gender::Feminine,
+    );
     println!("{:#?}", comp2);
 
-    let comp2 = Latin::guess_adjective("schoenoides", &Case::Gen, &Number::Plural, &Gender::Feminine);
+    let comp2 = Latin::guess_adjective(
+        "schoenoides",
+        &Case::Gen,
+        &Number::Plural,
+        &Gender::Feminine,
+    );
     println!("{:#?}", comp2);
 
+    /*
 
-    /* 
-    
 
     let testik = conji.noun_map.clone();
     let testik2 = conji.adj_map.clone();
     let testik3 = conji.verb_map.clone();
-    
+
     for wot in testik {
         println!("new_noun : {:#?}", wot);
         let new_noun = conji.noun(&wot.0, , &Number::Singular);

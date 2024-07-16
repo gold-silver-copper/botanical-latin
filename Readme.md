@@ -14,12 +14,8 @@ Right now Nouns and Adjectives are almost completely finished in their implement
 Sample usage: 
 
 ```rust
-
 use botanical_latin::*;
 fn main() {
-  
-
-
     // Load the Latin conjugator with csv dictionaries, provided in the github repo
     let inflector = Latin::new(
         "nouns.csv".into(),
@@ -27,11 +23,10 @@ fn main() {
         "verbs.csv".into(),
     );
 
-
     // Optionally define a ComplexNoun to decline a Noun phrase that can include multiple adjectives and nouns in apposition
     let complexik = ComplexNoun {
         head_noun: "lorica".into(),
-        adjective: vec!["hamatus".into(),"grandis".into()],
+        adjective: vec!["hamatus".into(), "grandis".into()],
         adposition_noun: vec!["manica".into()],
     };
 
@@ -40,19 +35,25 @@ fn main() {
     println!("{:#?}", complex);
     //Output: "lorica manica hamata grandi"
 
-
-    // To conjugate a noun by itself use the noun() function from the inflector, it output a tuple that contains the inflected string as the first(0th) element, and the Gender as the second element
+    // To conjugate a noun by itself use the noun() function from the inflector,
+    // it outputs a tuple that contains the inflected string as the first(0th) element, and the Gender as the second element
     let noun = inflector.noun("agricola", &Case::Acc, &Number::Plural);
     println!("{:#?}", noun.0);
     //Output: "agricolas"
 
     //Adjectives are similar to nouns, but require an additional Gender argument. Returns an inflected String
-    let adj = inflector.adjective("integer", &Case::Nom, &Number::Singular,&Gender::Feminine);
+    let adj = inflector.adjective("integer", &Case::Nom, &Number::Singular, &Gender::Feminine);
     println!("{:#?}", adj);
     //Output: "integra"
 
-    //You can guess nouns and adjectives without instantiating the conjugator with dictionaries if you so desire. But instantiating with the csv dictionaries gives a superior result.
-    let guessed_adjective = Latin::guess_adjective("schoenoides", &Case::Gen, &Number::Plural, &Gender::Feminine);
+    //You can guess nouns and adjectives without instantiating the conjugator with dictionaries if you so desire.
+    // But instantiating with the csv dictionaries gives a superior result.
+    let guessed_adjective = Latin::guess_adjective(
+        "schoenoides",
+        &Case::Gen,
+        &Number::Plural,
+        &Gender::Feminine,
+    );
     println!("{:#?}", guessed_adjective);
     // Output: "schoenoidum"
 
@@ -60,11 +61,14 @@ fn main() {
     println!("{:#?}", guessed_noun.0);
     //Output: "hibiscorum"
 
-
-
+    // Some words can have the same nominative but different declension classes such as "os" can be either mouth or bone.
+    // Append a 2 to the word_id to get the second conjugation, consult the csv dictionary for availability.
+    let os1 = inflector.noun("os", &Case::Gen, &Number::Singular);
+    println!("{:#?}", os1.0);
+    //Output: "oris"
+    let os2 = inflector.noun("os2", &Case::Gen, &Number::Singular);
+    println!("{:#?}", os2.0);
+    //Output: "ossis"
 }
-
-
-
 
 ```

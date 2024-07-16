@@ -816,8 +816,6 @@ pub const ES_ADJ_NEUT_ENDINGS: CaseEndings = CaseEndings {
     abl_pl: "ibus",
 };
 
-
-
 pub const MA_DECLENSION_ENDINGS: CaseEndings = CaseEndings {
     gender: Gender::Neuter,
     nom_sg: "ma",
@@ -851,7 +849,7 @@ pub enum Person {
 }
 
 impl Latin {
-    pub fn guess_noun( word: &str, case: &Case, number: &Number) -> Noun {
+    pub fn guess_noun(word: &str, case: &Case, number: &Number) -> Noun {
         let mut appended = Vec::from(TWO_LETTER_ENDINGS);
         appended.append(&mut Vec::from(ONE_LETTER_ENDINGS));
 
@@ -878,94 +876,68 @@ impl Latin {
     }
 
     pub fn guess_adjective(word: &str, case: &Case, number: &Number, gender: &Gender) -> Adjective {
-
         let mut word_stem = word.to_string();
         word_stem.truncate(word_stem.len() - 2);
 
-        let mut masc_ends = &US_DECLENSION_ENDINGS; 
+        let mut masc_ends = &US_DECLENSION_ENDINGS;
         let mut fem_ends = &A_DECLENSION_ENDINGS;
         let mut neut_ends = &UM_DECLENSION_ENDINGS;
-    
 
-   if word.ends_with("us") {
+        if word.ends_with("us") {
+            word_stem = word.to_string();
+            word_stem.truncate(word.len() - 2);
 
-    word_stem = word.to_string();
-    word_stem.truncate(word.len() - 2);
+            masc_ends = &US_DECLENSION_ENDINGS;
+            fem_ends = &A_DECLENSION_ENDINGS;
+            neut_ends = &UM_DECLENSION_ENDINGS;
+        } else if word.ends_with("er") {
+            word_stem = word.to_string();
 
-  masc_ends = &US_DECLENSION_ENDINGS; 
-    fem_ends = &A_DECLENSION_ENDINGS;
-    neut_ends = &UM_DECLENSION_ENDINGS;
+            masc_ends = &ER_ADJECTIVE_MASC_ENDINGS;
+        } else if word.ends_with("is") {
+            word_stem = word.to_string();
+            word_stem.truncate(word.len() - 2);
 
-   }
-  
+            masc_ends = &IS_ADJECTIVE_MASC_ENDINGS;
+            fem_ends = &IS_ADJECTIVE_MASC_ENDINGS;
+            neut_ends = &E_DECLENSION_ENDINGS;
+        } else if word.ends_with("ex") {
+            word_stem = word.to_string();
+            word_stem.truncate(word.len() - 2);
 
-    else if word.ends_with("er") {
-        word_stem = word.to_string();
-       
-        masc_ends = &ER_ADJECTIVE_MASC_ENDINGS;
+            masc_ends = &EX_ADJECTIVE_MASC_ENDINGS;
+            fem_ends = &EX_ADJECTIVE_MASC_ENDINGS;
+            neut_ends = &EX_ADJECTIVE_NEUT_ENDINGS;
+        } else if word.ends_with("or") {
+            word_stem = word.to_string();
+            word_stem.truncate(word.len() - 2);
 
-    }
-   else  if word.ends_with("is") {
-         word_stem = word.to_string();
-         word_stem.truncate(word.len() - 2);
-       
-        masc_ends = &IS_ADJECTIVE_MASC_ENDINGS;
-        fem_ends = &IS_ADJECTIVE_MASC_ENDINGS;
-       neut_ends = &E_DECLENSION_ENDINGS;
+            masc_ends = &OR_DECLENSION_ENDINGS;
+            fem_ends = &OR_DECLENSION_ENDINGS;
+            neut_ends = &OR_ADJ_NEUTER_ENDINGS;
+        } else if word.ends_with("des") {
+            word_stem = word.to_string();
+            word_stem.truncate(word.len() - 2);
 
-    }
+            masc_ends = &ES_ADJ_MASC_ENDINGS;
+            fem_ends = &ES_ADJ_MASC_ENDINGS;
+            neut_ends = &ES_ADJ_NEUT_ENDINGS;
+        } else if word.ends_with("s") {
+            word_stem = word.to_string();
+            word_stem.truncate(word.len() - 1);
 
-    else if word.ends_with("ex") {
-        word_stem = word.to_string();
-        word_stem.truncate(word.len() - 2);
-      
-       masc_ends = &EX_ADJECTIVE_MASC_ENDINGS;
-       fem_ends = &EX_ADJECTIVE_MASC_ENDINGS;
-      neut_ends = &EX_ADJECTIVE_NEUT_ENDINGS;
+            masc_ends = &S_DECLENSION_ENDINGS;
+            fem_ends = &S_DECLENSION_ENDINGS;
+            neut_ends = &S_ADJ_NEUTER_ENDINGS;
+        }
 
-   }
+        let ending = match gender {
+            Gender::Feminine => fem_ends.ending(case, number),
+            Gender::Masculine => masc_ends.ending(case, number),
+            Gender::Neuter => neut_ends.ending(case, number),
+        };
 
-  else  if word.ends_with("or") {
-    word_stem = word.to_string();
-    word_stem.truncate(word.len() - 2);
-  
-   masc_ends = &OR_DECLENSION_ENDINGS;
-   fem_ends = &OR_DECLENSION_ENDINGS;
-  neut_ends = &OR_ADJ_NEUTER_ENDINGS;
-
-}
-
-
-else if word.ends_with("des") {
-    word_stem = word.to_string();
-    word_stem.truncate(word.len() - 2);
-  
-   masc_ends = &ES_ADJ_MASC_ENDINGS;
-   fem_ends = &ES_ADJ_MASC_ENDINGS;
-  neut_ends = &ES_ADJ_NEUT_ENDINGS;
-
-}
-else if word.ends_with("s") {
-    word_stem = word.to_string();
-    word_stem.truncate(word.len() - 1);
-  
-   masc_ends = &S_DECLENSION_ENDINGS;
-   fem_ends = &S_DECLENSION_ENDINGS;
-  neut_ends = &S_ADJ_NEUTER_ENDINGS;
-
-}
-
-
-
-let ending = match gender {
-    Gender::Feminine => fem_ends.ending(case, number),
-    Gender::Masculine => masc_ends.ending(case, number),
-    Gender::Neuter => neut_ends.ending(case, number)
-};
-
-format!("{word_stem}{ending}")
-
-
+        format!("{word_stem}{ending}")
     }
 
     pub fn complex_noun(
@@ -1001,40 +973,40 @@ format!("{word_stem}{ending}")
         let recordik = self.noun_map.get(word);
 
         match recordik {
-            Some(record) => { let mut response = match number {
-                Number::Singular => match case {
-                    Case::Nom => (record.nom_sg.clone(), record.gender.clone()),
-                    Case::Gen => (record.gen_sg.clone(), record.gender.clone()),
-                    Case::Dat => (record.dat_sg.clone(), record.gender.clone()),
-                    Case::Acc => (record.acc_sg.clone(), record.gender.clone()),
-                    Case::Abl => (record.abl_sg.clone(), record.gender.clone()),
-                    Case::Voc => (record.voc_sg.clone(), record.gender.clone()),
-                    Case::Loc => (record.loc_sg.clone(), record.gender.clone()),
-                },
-                Number::Plural => match case {
-                    Case::Nom => (record.nom_pl.clone(), record.gender.clone()),
-                    Case::Gen => (record.gen_pl.clone(), record.gender.clone()),
-                    Case::Dat => (record.dat_pl.clone(), record.gender.clone()),
-                    Case::Acc => (record.acc_pl.clone(), record.gender.clone()),
-                    Case::Abl => (record.abl_pl.clone(), record.gender.clone()),
-                    Case::Voc => (record.voc_pl.clone(), record.gender.clone()),
-                    Case::Loc => (record.loc_pl.clone(), record.gender.clone()),
-                },
-            };
-    
-            if case == &Case::Loc && (response.0 == "" || response.0 == "-") {
-                response.0 = format!("{}", record.abl_sg.clone());
-            }
-    
-            if (response.0 == "" || response.0 == "-") {
-                response = Latin::guess_noun(word, case, number);
-            }
-    
-            response},
-            None => Latin::guess_noun(word, case, number)
-        }
+            Some(record) => {
+                let mut response = match number {
+                    Number::Singular => match case {
+                        Case::Nom => (record.nom_sg.clone(), record.gender.clone()),
+                        Case::Gen => (record.gen_sg.clone(), record.gender.clone()),
+                        Case::Dat => (record.dat_sg.clone(), record.gender.clone()),
+                        Case::Acc => (record.acc_sg.clone(), record.gender.clone()),
+                        Case::Abl => (record.abl_sg.clone(), record.gender.clone()),
+                        Case::Voc => (record.voc_sg.clone(), record.gender.clone()),
+                        Case::Loc => (record.loc_sg.clone(), record.gender.clone()),
+                    },
+                    Number::Plural => match case {
+                        Case::Nom => (record.nom_pl.clone(), record.gender.clone()),
+                        Case::Gen => (record.gen_pl.clone(), record.gender.clone()),
+                        Case::Dat => (record.dat_pl.clone(), record.gender.clone()),
+                        Case::Acc => (record.acc_pl.clone(), record.gender.clone()),
+                        Case::Abl => (record.abl_pl.clone(), record.gender.clone()),
+                        Case::Voc => (record.voc_pl.clone(), record.gender.clone()),
+                        Case::Loc => (record.loc_pl.clone(), record.gender.clone()),
+                    },
+                };
 
-       
+                if case == &Case::Loc && (response.0 == "" || response.0 == "-") {
+                    response.0 = format!("{}", record.abl_sg.clone());
+                }
+
+                if (response.0 == "" || response.0 == "-") {
+                    response = Latin::guess_noun(word, case, number);
+                }
+
+                response
+            }
+            None => Latin::guess_noun(word, case, number),
+        }
     }
 
     pub fn new(noun_path: String, adjective_path: String, verb_path: String) -> Self {
@@ -1098,7 +1070,7 @@ format!("{word_stem}{ending}")
         let recordik = self.adj_map.get(word);
 
         match recordik {
-            Some(record) => {    match gender {
+            Some(record) => match gender {
                 Gender::Masculine => match number {
                     Number::Singular => match case {
                         Case::Nom => record.nom_sg_masc.clone(),
@@ -1153,15 +1125,9 @@ format!("{word_stem}{ending}")
                         _ => record.abl_pl_neut.clone(),
                     },
                 },
-            }
-        
-        
-        },
-        None => Latin::guess_adjective(word, case, number, gender)
-
+            },
+            None => Latin::guess_adjective(word, case, number, gender),
         }
-
-    
     }
 
     pub fn verb(
