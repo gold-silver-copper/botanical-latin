@@ -1,6 +1,6 @@
 [package]
 name = "botanical-latin"
-version = "0.0.6"
+version = "0.0.7"
 edition = "2021"
 description = "Decliner / conjugator / inflector for classical / botanical Latin."
 license = "MIT OR Apache-2.0"
