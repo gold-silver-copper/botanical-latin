@@ -1,7 +1,7 @@
 # botanical-latin "Decliner / conjugator / inflector for classical / botanical Latin."
 
 [![Crates.io](https://img.shields.io/crates/v/botanical-latin.svg)](https://crates.io/crates/botanical-latin)
-[![Documentation](https://docs.rs/botanical-latin/badge.svg)](https://docs.rs/botanical-latin/latest/botanical-latin/)
+[![Documentation](https://docs.rs/botanical-latin/badge.svg)](https://docs.rs/botanical-latin/latest/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/bevyengine/bevy/blob/master/LICENSE)
 [![Downloads](https://img.shields.io/crates/d/botanical-latin.svg)](https://crates.io/crates/botanical-latin) 
 
